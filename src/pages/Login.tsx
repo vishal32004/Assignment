@@ -1,37 +1,97 @@
-import React from "react";
-import InputField from "../components/InputField";
-import Button from "../components/Button";
+import { LockOutlined } from "@mui/icons-material";
+import {
+  Container,
+  CssBaseline,
+  Box,
+  Avatar,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+} from "@mui/material";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 
-export default function Login() {
+type FormData = {
+  email: string;
+  password: string;
+};
+
+const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>(); // Define the form data type here
+
   return (
-    <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-    <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-      <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-        <div className="max-w-md mx-auto">
-          <div>
-            <h1 className="text-2xl font-semibold">Login</h1>
-          </div>
-          <div className="divide-y divide-gray-200">
-            <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-              <InputField
+    <>
+      <Container maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            mt: 20,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
+            <LockOutlined />
+          </Avatar>
+          <Typography variant="h5">Login</Typography>
+          <Box sx={{ mt: 1 }}>
+            <form
+              onSubmit={handleSubmit((data) => console.log(data))}
+              noValidate
+            >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
                 id="email"
-                name="email"
-                type="text"
-                placeholder="Email address"
+                label="Email Address"
+                autoFocus
+                {...register("email", {
+                  required: "Email is required",
+                })}
+                error={!!errors.email}
+                helperText={errors.email && errors.email.message}
               />
-              <InputField
+
+              <TextField
+                margin="normal"
+                required
+                fullWidth
                 id="password"
-                name="password"
+                label="Password"
                 type="password"
-                placeholder="Password"
+                {...register("password", {
+                  required: "Password is required",
+                })}
+                error={!!errors.password}
+                helperText={errors.password && errors.password.message}
               />
-              <Button text="Submit" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Login
+              </Button>
+              <Grid container justifyContent={"flex-end"}>
+                <Grid item>
+                  <Link to="/register">Don't have an account? Register</Link>
+                </Grid>
+              </Grid>
+            </form>
+          </Box>
+        </Box>
+      </Container>
+    </>
   );
-}
+};
+
+export default Login;
