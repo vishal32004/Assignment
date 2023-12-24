@@ -12,12 +12,16 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { login } from "../Slices/authSlice"
+
+type FormData = {
+  email: string;
+  password: string;
+};
 
 const Login = () => {
-  type FormData = {
-    email: string;
-    password: string;
-  };
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -26,7 +30,22 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {};
+  const handleLogin = async () => {
+    if (email && password) {
+      try {
+        await dispatch(
+          login({
+            email,
+            password,
+          })
+        ).unwrap();
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      // Show an error message.
+    }
+  };
 
   return (
     <>
@@ -50,9 +69,9 @@ const Login = () => {
               noValidate
             >
               <TextField
-               {...register("email", {
-                required: "email is required",
-              })}
+                {...register("email", {
+                  required: "email is required",
+                })}
                 margin="normal"
                 required
                 fullWidth
@@ -67,9 +86,9 @@ const Login = () => {
               />
 
               <TextField
-               {...register("password", {
-                required: "Password is required",
-              })}
+                {...register("password", {
+                  required: "Password is required",
+                })}
                 margin="normal"
                 required
                 fullWidth
@@ -86,7 +105,7 @@ const Login = () => {
               />
 
               <Button
-              type="submit"
+                type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}

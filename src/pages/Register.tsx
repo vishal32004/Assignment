@@ -12,13 +12,17 @@ import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { registerNewUser } from "../Slices/authSlice";
+
+type FormData = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 const Register = () => {
-  type FormData = {
-    name: string;
-    email: string;
-    password: string;
-  };
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -28,7 +32,23 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = async () => {};
+  const handleRegister = async () => {
+    console.log(name, email, typeof password, "vishal");
+    if (name && email && password) {
+      try {
+        await dispatch(
+          registerNewUser({
+            name,
+            email,
+            password,
+          })
+        ).unwrap();
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+    }
+  };
 
   return (
     <>
