@@ -9,20 +9,24 @@ import {
   Button,
   Grid,
 } from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-type FormData = {
-  email: string;
-  password: string;
-};
-
 const Login = () => {
+  type FormData = {
+    email: string;
+    password: string;
+  };
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>(); // Define the form data type here
+  } = useForm<FormData>();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {};
 
   return (
     <>
@@ -46,47 +50,56 @@ const Login = () => {
               noValidate
             >
               <TextField
+               {...register("email", {
+                required: "email is required",
+              })}
                 margin="normal"
                 required
                 fullWidth
                 id="email"
                 label="Email Address"
+                name="email"
                 autoFocus
-                {...register("email", {
-                  required: "Email is required",
-                })}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 error={!!errors.email}
                 helperText={errors.email && errors.email.message}
               />
 
               <TextField
+               {...register("password", {
+                required: "Password is required",
+              })}
                 margin="normal"
                 required
                 fullWidth
                 id="password"
+                name="password"
                 label="Password"
                 type="password"
-                {...register("password", {
-                  required: "Password is required",
-                })}
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
                 error={!!errors.password}
                 helperText={errors.password && errors.password.message}
               />
 
               <Button
-                type="submit"
+              type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={handleLogin}
               >
                 Login
               </Button>
-              <Grid container justifyContent={"flex-end"}>
-                <Grid item>
-                  <Link to="/register">Don't have an account? Register</Link>
-                </Grid>
-              </Grid>
             </form>
+            <Grid container justifyContent={"flex-end"}>
+              <Grid item>
+                <Link to="/register">Don't have an account? Register</Link>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
       </Container>
