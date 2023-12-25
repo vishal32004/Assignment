@@ -14,6 +14,14 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { registerNewUser } from "../Slices/authSlice";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const registerSchema = z.object({
+  name: z.string().min(4),
+  email: z.string().email(),
+  password: z.string().min(8, "Password Must be 8 characters Long"),
+});
 
 type FormData = {
   name: string;
@@ -27,13 +35,14 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    resolver: zodResolver(registerSchema),
+  });
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRegister = async () => {
-    console.log(name, email, typeof password, "vishal");
     if (name && email && password) {
       try {
         await dispatch(
@@ -47,6 +56,7 @@ const Register = () => {
         console.error(e);
       }
     } else {
+      return;
     }
   };
 

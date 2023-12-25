@@ -13,7 +13,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../hooks/reduxHooks";
-import { login } from "../Slices/authSlice"
+import { login } from "../Slices/authSlice";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, "Password Must be 8 characters  Long"),
+});
 
 type FormData = {
   email: string;
@@ -26,7 +33,9 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    resolver: zodResolver(loginSchema),
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -43,7 +52,7 @@ const Login = () => {
         console.error(e);
       }
     } else {
-      // Show an error message.
+      return;
     }
   };
 

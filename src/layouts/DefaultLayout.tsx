@@ -1,10 +1,11 @@
-import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { Outlet } from "react-router-dom";
+import { useAppSelector } from "../hooks/reduxHooks";
 import { Navigate } from "react-router-dom";
 
 const DefaultLayout = () => {
-  const basicUserInfo = useAppSelector((state: any) => state.auth.basicUserInfo);
+  const basicUserInfo = useAppSelector(
+    (state: any) => state.auth.basicUserInfo
+  );
 
   if (basicUserInfo) {
     return <Navigate replace to={"/"} />;

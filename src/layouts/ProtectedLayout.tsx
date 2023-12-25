@@ -1,6 +1,5 @@
-import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { Outlet } from "react-router-dom";
+import { useAppSelector } from "../hooks/reduxHooks";
 import { Navigate } from "react-router-dom";
 
 const ProtectedLayout = () => {
