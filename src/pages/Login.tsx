@@ -22,10 +22,7 @@ const loginSchema = z.object({
   password: z.string().min(8, "Password Must be 8 characters  Long"),
 });
 
-type FormData = {
-  email: string;
-  password: string;
-};
+type FormData = z.infer<typeof loginSchema>;
 
 const Login = () => {
   const dispatch = useAppDispatch();

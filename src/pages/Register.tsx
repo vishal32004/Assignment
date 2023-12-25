@@ -23,11 +23,7 @@ const registerSchema = z.object({
   password: z.string().min(8, "Password Must be 8 characters Long"),
 });
 
-type FormData = {
-  name: string;
-  email: string;
-  password: string;
-};
+type FormData = z.infer<typeof registerSchema>
 
 const Register = () => {
   const dispatch = useAppDispatch();
