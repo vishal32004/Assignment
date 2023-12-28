@@ -16,6 +16,10 @@ import { useAppDispatch } from "../hooks/reduxHooks";
 import { registerNewUser } from "../Slices/authSlice";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  showNotification,
+  NotificationType,
+} from "../Slices/notificationSlice";
 
 const registerSchema = z.object({
   name: z.string().min(4),
@@ -23,7 +27,7 @@ const registerSchema = z.object({
   password: z.string().min(8, "Password Must be 8 characters Long"),
 });
 
-type FormData = z.infer<typeof registerSchema>
+type FormData = z.infer<typeof registerSchema>;
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -52,7 +56,12 @@ const Register = () => {
         console.error(e);
       }
     } else {
-      return;
+      dispatch(
+        showNotification({
+          message: "Please fill out all the required fields",
+          type: NotificationType.Error,
+        })
+      );
     }
   };
 

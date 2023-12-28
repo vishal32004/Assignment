@@ -16,6 +16,10 @@ import { useAppDispatch } from "../hooks/reduxHooks";
 import { login } from "../Slices/authSlice";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  showNotification,
+  NotificationType,
+} from "../Slices/notificationSlice";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -49,7 +53,12 @@ const Login = () => {
         console.error(e);
       }
     } else {
-      return;
+      dispatch(
+        showNotification({
+          message: "Please provide email and password",
+          type: NotificationType.Error,
+        })
+      );
     }
   };
 
