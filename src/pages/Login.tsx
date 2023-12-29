@@ -23,7 +23,7 @@ import {
 
 const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8, "Password Must be 8 characters  Long"),
+  password: z.string()
 });
 
 type FormData = z.infer<typeof loginSchema>;
@@ -80,7 +80,7 @@ const Login = () => {
           <Typography variant="h5">Login</Typography>
           <Box sx={{ mt: 1 }}>
             <form
-              onSubmit={handleSubmit((data) => console.log(data))}
+              onSubmit={handleSubmit(handleLogin)}
               noValidate
             >
               <TextField
@@ -124,7 +124,6 @@ const Login = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={handleLogin}
               >
                 Login
               </Button>
