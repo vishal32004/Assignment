@@ -1,0 +1,30 @@
+.container {
+  cursor: pointer;
+  position: absolute;
+  width: 30px;
+  height: 20px;
+  left: 1%;
+}
+
+.bars {
+  width: 30px;
+  height: 4px;
+  background: #000;
+}
+
+.bars::before,
+.bars::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 4px;
+  background: #000;
+}
+
+.bars::before {
+  margin-top: 9px;
+}
+
+.bars::after {
+  margin-top: 18px;
+}

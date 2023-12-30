@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
-import { Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { getUser, logout } from "../Slices/authSlice";
-import { useNavigate } from "react-router-dom";
+import { getUser } from "../Slices/authSlice";
+import styles from "../cssModules/Home.module.css";
+import LogOut from "../components/LogOut";
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
   const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
   const userProfileInfo = useAppSelector((state) => state.auth.userProfileData);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (basicUserInfo) {
@@ -17,23 +16,67 @@ const Home = () => {
     }
   }, [basicUserInfo]);
 
-  const handleLogout = async () => {
-    try {
-      await dispatch(logout()).unwrap();
-      navigate("/login");
-    } catch (e) {
-      console.error(e);
-    }
+  const handleEditClick = () => {
+    setIsEditing(true);
   };
 
   return (
     <>
-      <h1>Home</h1>
-      <h4>Name: {userProfileInfo?.name}</h4>
-      <h4>Email: {userProfileInfo?.email}</h4>
-      <Button variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleLogout}>
-        Logout
-      </Button>
+      <LogOut />
+      <div className={styles.body}>
+        <div className={styles.container}>
+          <div className={styles.title}>User Information</div>
+          <form action="#">
+            <div className={styles.user__details}>
+              <div className={styles.input__box}>
+                <span className={styles.details}>Full Name</span>
+                <input
+                  type="text"
+                  placeholder="E.g: John Smith"
+                  required
+                  value={userProfileInfo?.name}
+                  disabled={!isEditing}
+                />
+              </div>
+              <div className={styles.input__box}>
+                <span className={styles.details}>City</span>
+                <input type="text" placeholder="johnWC98" required disabled={!isEditing}/>
+              </div>
+              <div className={styles.input__box}>
+                <span className={styles.details}>Email</span>
+                <input
+                  type="email"
+                  placeholder="johnsmith@hotmail.com"
+                  required
+                  value={userProfileInfo?.email}
+                  disabled={!isEditing}
+                />
+              </div>
+              <div className={styles.input__box}>
+                <span className={styles.details}>Phone Number</span>
+                <input
+                  type="tel"
+                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                  placeholder="012-345-6789"
+                  required
+                  disabled={!isEditing}
+                />
+              </div>
+            </div>
+            <div className={styles.button}>
+              {!isEditing ? ( // Toggle between Edit and Save buttons
+                <input
+                  type="button"
+                  value="Edit Details"
+                  onClick={handleEditClick}
+                />
+              ) : (
+                <input type="submit" value="Save Details" />
+              )}
+            </div>
+          </form>
+        </div>
+      </div>
     </>
   );
 };
