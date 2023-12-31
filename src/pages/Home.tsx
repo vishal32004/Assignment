@@ -48,8 +48,18 @@ const Home: React.FC = () => {
             </div>
           </form>
           <button
+            className={styles.passButtom}
+            onClick={() => naviagte("/updatePassword")}
+          >
+            <i
+              className="fa-sharp fa-solid fa-pen-to-square"
+              style={{ marginRight: "5px" }}
+            ></i>
+            Change Password
+          </button>
+          <button
             className={styles.EditButtom}
-            onClick={() => naviagte("/updateUser", {state: userProfileInfo})}
+            onClick={() => naviagte("/updateUser")}
           >
             <i
               className="fa-sharp fa-solid fa-pen-to-square"

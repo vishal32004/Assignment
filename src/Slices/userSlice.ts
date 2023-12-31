@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 
 type UserProfile = {
   name: string;
-  email: string
+  email: string;
 };
 
 type ErrorResponse = {
@@ -24,11 +24,39 @@ const initialState: UserApiState = {
 };
 
 export const updateUserDetails = createAsyncThunk(
-  "user/updateDetails",
-  async ({ userId, updatedDetails }: { userId: string, updatedDetails: UserProfile }, { rejectWithValue }) => {
+  "users/updateDetails",
+  async (
+    { userId, updatedDetails }: { userId: string; updatedDetails: UserProfile },
+    { rejectWithValue }
+  ) => {
     try {
-      const response = await axiosInstance.put(`/users/${userId}`, updatedDetails);
-      console.log(response.data)
+      const response = await axiosInstance.put(
+        `/users/${userId}`,
+        updatedDetails
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorResponse = error.response.data;
+        return rejectWithValue(errorResponse);
+      }
+      throw error;
+    }
+  }
+);
+
+export const updatePassword = createAsyncThunk(
+  "users/updatePassword",
+  async (
+    { userId, password }: { userId: string; password: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axiosInstance.put(`/users/${userId}/password`, {
+        password,
+      });
+      console.log(response.data);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -43,21 +71,45 @@ export const updateUserDetails = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: { },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(updateUserDetails.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
-      .addCase(updateUserDetails.fulfilled, (state, action: PayloadAction<UserProfile>) => {
-        state.status = "idle";
-        state.userProfile = action.payload;
-      })
+      .addCase(
+        updateUserDetails.fulfilled,
+        (state, action: PayloadAction<UserProfile>) => {
+          state.status = "idle";
+          state.userProfile = action.payload;
+        }
+      )
       .addCase(updateUserDetails.rejected, (state, action) => {
         state.status = "failed";
         if (action.payload) {
-          state.error = (action.payload as ErrorResponse).message || "Update failed";
+          state.error =
+            (action.payload as ErrorResponse).message || "Update failed";
+        } else {
+          state.error = action.error.message || "Update failed";
+        }
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(
+        updatePassword.fulfilled,
+        (state, action: PayloadAction<UserProfile>) => {
+          state.status = "idle";
+          state.userProfile = action.payload;
+        }
+      )
+      .addCase(updatePassword.rejected, (state, action) => {
+        state.status = "failed";
+        if (action.payload) {
+          state.error =
+            (action.payload as ErrorResponse).message || "Update failed";
         } else {
           state.error = action.error.message || "Update failed";
         }

@@ -172,4 +172,10 @@ form .button input:hover {
   float: right;
   padding: 10px;
   background-color: #71b7e6;
+  color: #fff;
+}
+.passButtom {
+  padding: 10px;
+  background-color: #9b59b6;
+  color: #fff;
 }

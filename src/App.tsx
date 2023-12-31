@@ -7,6 +7,7 @@ import DefaultLayout from "./layouts/DefaultLayout";
 import ProtectedLayout from "./layouts/ProtectedLayout";
 import NotificationBar from "./components/NotificationBar";
 import UpdateUser from "./components/UpdateUser";
+import ChangePassword from "./components/ChangePassword";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route element={<ProtectedLayout />}>
           <Route path="/" element={<Home />}></Route>
           <Route path="/updateUser" element={<UpdateUser />} />
+          <Route path="/updatePassword" element={<ChangePassword />} />
         </Route>
       </Routes>
     </>
