@@ -167,3 +167,9 @@ form .button input:hover {
     width: 0;
   }
 }
+
+.EditButtom {
+  float: right;
+  padding: 10px;
+  background-color: #71b7e6;
+}

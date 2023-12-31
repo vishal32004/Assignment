@@ -68,7 +68,7 @@ export const registerNewUser = createAsyncThunk(
     "registerNewUser",
     async (data: NewUser, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.post("/registerNewUser", data);
+            const response = await axiosInstance.post("/register", data);
             const resData = response.data;
 
             localStorage.setItem("userInfo", JSON.stringify(resData));

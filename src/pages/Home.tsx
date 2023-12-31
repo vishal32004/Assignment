@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { getUser } from "../Slices/authSlice";
 import styles from "../cssModules/Home.module.css";
 import LogOut from "../components/LogOut";
+import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+const Home: React.FC = () => {
   const dispatch = useAppDispatch();
+  const naviagte = useNavigate();
   const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
   const userProfileInfo = useAppSelector((state) => state.auth.userProfileData);
-  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (basicUserInfo) {
@@ -16,17 +17,13 @@ const Home = () => {
     }
   }, [basicUserInfo]);
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
   return (
     <>
       <LogOut />
       <div className={styles.body}>
         <div className={styles.container}>
           <div className={styles.title}>User Information</div>
-          <form action="#">
+          <form>
             <div className={styles.user__details}>
               <div className={styles.input__box}>
                 <span className={styles.details}>Full Name</span>
@@ -34,13 +31,9 @@ const Home = () => {
                   type="text"
                   placeholder="E.g: John Smith"
                   required
-                  value={userProfileInfo?.name}
-                  disabled={!isEditing}
+                  value={userProfileInfo?.name || ""}
+                  readOnly
                 />
-              </div>
-              <div className={styles.input__box}>
-                <span className={styles.details}>City</span>
-                <input type="text" placeholder="johnWC98" required disabled={!isEditing}/>
               </div>
               <div className={styles.input__box}>
                 <span className={styles.details}>Email</span>
@@ -48,33 +41,22 @@ const Home = () => {
                   type="email"
                   placeholder="johnsmith@hotmail.com"
                   required
-                  value={userProfileInfo?.email}
-                  disabled={!isEditing}
+                  value={userProfileInfo?.email || ""}
+                  readOnly
                 />
               </div>
-              <div className={styles.input__box}>
-                <span className={styles.details}>Phone Number</span>
-                <input
-                  type="tel"
-                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                  placeholder="012-345-6789"
-                  required
-                  disabled={!isEditing}
-                />
-              </div>
-            </div>
-            <div className={styles.button}>
-              {!isEditing ? ( // Toggle between Edit and Save buttons
-                <input
-                  type="button"
-                  value="Edit Details"
-                  onClick={handleEditClick}
-                />
-              ) : (
-                <input type="submit" value="Save Details" />
-              )}
             </div>
           </form>
+          <button
+            className={styles.EditButtom}
+            onClick={() => naviagte("/updateUser", {state: userProfileInfo})}
+          >
+            <i
+              className="fa-sharp fa-solid fa-pen-to-square"
+              style={{ marginRight: "5px" }}
+            ></i>
+            Edit Detais
+          </button>
         </div>
       </div>
     </>

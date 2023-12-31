@@ -4,9 +4,7 @@ import { AxiosError } from "axios";
 
 type UserProfile = {
   name: string;
-  email: string;
-  city: string;
-  phoneNumber: number
+  email: string
 };
 
 type ErrorResponse = {
