@@ -60,7 +60,7 @@ export default function UpdateUser() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h2 className={styles.h2}>Edit Details</h2>
+        <h2 className={styles.h2}>Edit Password</h2>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <label className={styles.label} htmlFor="username">
             Password
@@ -71,7 +71,7 @@ export default function UpdateUser() {
             className={styles.input}
             {...register("password")}
           />
-          {errors.password && <span>{errors.password.message}</span>}
+          {errors.password && <span style={{color: 'red'}}>{errors.password.message}</span>}
 
           <label htmlFor="password">Confirm Password</label>
           <input
@@ -81,7 +81,7 @@ export default function UpdateUser() {
             {...register("confirmPassword")}
           />
           {errors.confirmPassword && (
-            <span>{errors.confirmPassword.message}</span>
+            <span style={{color: 'red'}}>{errors.confirmPassword.message}</span>
           )}
 
           <button type="submit" className={styles.button}>

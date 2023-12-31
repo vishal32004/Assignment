@@ -1,13 +1,31 @@
 import { useEffect, useState } from "react";
 import styles from "../cssModules/UpdateUser.module.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { getUser } from "../Slices/authSlice";
 import { updateUserDetails } from "../Slices/userSlice";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+type UpdateFormData = {
+  name: string;
+  email: string;
+};
+
+const UpdateSchema = z.object({
+  name: z.string().min(6).max(20),
+  email: z.string().email(),
+});
 
 export default function UpdateUser() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<UpdateFormData>({
+    resolver: zodResolver(UpdateSchema),
+  });
   const dispatch = useAppDispatch();
   const naviagte = useNavigate();
   const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
@@ -19,19 +37,18 @@ export default function UpdateUser() {
     }
   }, [basicUserInfo]);
 
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleUpdate = async (data: UpdateFormData) => {
     try {
       const updatedDetails = {
-        name: name,
-        email: email,
+        name: data.name,
+        email: data.email,
       };
 
       await dispatch(
         updateUserDetails({ userId: basicUserInfo?.id || "", updatedDetails })
       );
 
-      naviagte('/');
+      naviagte("/");
 
       console.log("Details updated successfully!");
     } catch (error) {
@@ -43,7 +60,7 @@ export default function UpdateUser() {
     <div className={styles.container}>
       <div className={styles.card}>
         <h2 className={styles.h2}>Edit Details</h2>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit(handleUpdate)}>
           <label className={styles.label} htmlFor="username">
             Full Name
           </label>
@@ -52,8 +69,12 @@ export default function UpdateUser() {
             placeholder="Enter your username"
             className={styles.input}
             defaultValue={userProfileInfo?.name}
-            onChange={(e) => setName(e.target.value)}
+            {...register("name")}
           />
+
+          {errors.name && (
+            <span style={{ color: "red" }}>{errors.name.message}</span>
+          )}
 
           <label htmlFor="password">Email</label>
           <input
@@ -61,14 +82,12 @@ export default function UpdateUser() {
             placeholder="Enter your password"
             className={styles.input}
             defaultValue={userProfileInfo?.email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email")}
           />
-
-          <button
-            type="submit"
-            className={styles.button}
-            onClick={handleUpdate}
-          >
+          {errors.email && (
+            <span style={{ color: "red" }}>{errors.email.message}</span>
+          )}
+          <button type="submit" className={styles.button}>
             Update Details
           </button>
         </form>
