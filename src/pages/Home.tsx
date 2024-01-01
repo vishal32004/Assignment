@@ -1,21 +1,12 @@
-import React, { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { getUser } from "../Slices/authSlice";
+import React from "react";
 import styles from "../cssModules/Home.module.css";
 import LogOut from "../components/LogOut";
 import { useNavigate } from "react-router-dom";
+import { useUserData } from "../hooks/useUserData";
 
 const Home: React.FC = () => {
-  const dispatch = useAppDispatch();
   const naviagte = useNavigate();
-  const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
-  const userProfileInfo = useAppSelector((state) => state.auth.userProfileData);
-
-  useEffect(() => {
-    if (basicUserInfo) {
-      dispatch(getUser(basicUserInfo.id));
-    }
-  }, [basicUserInfo]);
+  const { name, email } = useUserData();
 
   return (
     <>
@@ -31,7 +22,7 @@ const Home: React.FC = () => {
                   type="text"
                   placeholder="E.g: John Smith"
                   required
-                  value={userProfileInfo?.name || ""}
+                  value={name || ""}
                   readOnly
                 />
               </div>
@@ -41,32 +32,41 @@ const Home: React.FC = () => {
                   type="email"
                   placeholder="johnsmith@hotmail.com"
                   required
-                  value={userProfileInfo?.email || ""}
+                  value={email || ""}
                   readOnly
                 />
               </div>
             </div>
           </form>
-          <button
-            className={styles.passButtom}
-            onClick={() => naviagte("/updatePassword")}
+          <div
+            style={{
+              display: "flex",
+              gap: "4rem",
+              textAlign: "center",
+              justifyContent: "space-between",
+            }}
           >
-            <i
-              className="fa-sharp fa-solid fa-pen-to-square"
-              style={{ marginRight: "5px" }}
-            ></i>
-            Change Password
-          </button>
-          <button
-            className={styles.EditButtom}
-            onClick={() => naviagte("/updateUser")}
-          >
-            <i
-              className="fa-sharp fa-solid fa-pen-to-square"
-              style={{ marginRight: "5px" }}
-            ></i>
-            Edit Detais
-          </button>
+            <button
+              className={styles.passButtom}
+              onClick={() => naviagte("/updatePassword")}
+            >
+              <i
+                className="fa-sharp fa-solid fa-pen-to-square"
+                style={{ marginRight: "5px" }}
+              ></i>
+              Change Password
+            </button>
+            <button
+              className={styles.EditButtom}
+              onClick={() => naviagte("/updateUser")}
+            >
+              <i
+                className="fa-sharp fa-solid fa-pen-to-square"
+                style={{ marginRight: "5px" }}
+              ></i>
+              Edit Details
+            </button>
+          </div>
         </div>
       </div>
     </>

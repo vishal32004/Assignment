@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
 import styles from "../cssModules/UpdateUser.module.css";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { getUser } from "../Slices/authSlice";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { updateUserDetails } from "../Slices/userSlice";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useUserData } from "../hooks/useUserData";
 
 type UpdateFormData = {
   name: string;
@@ -28,14 +27,7 @@ export default function UpdateUser() {
   });
   const dispatch = useAppDispatch();
   const naviagte = useNavigate();
-  const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
-  const userProfileInfo = useAppSelector((state) => state.auth.userProfileData);
-
-  useEffect(() => {
-    if (basicUserInfo) {
-      dispatch(getUser(basicUserInfo.id));
-    }
-  }, [basicUserInfo]);
+  const { id, name, email } = useUserData();
 
   const handleUpdate = async (data: UpdateFormData) => {
     try {
@@ -44,9 +36,7 @@ export default function UpdateUser() {
         email: data.email,
       };
 
-      await dispatch(
-        updateUserDetails({ userId: basicUserInfo?.id || "", updatedDetails })
-      );
+      await dispatch(updateUserDetails({ userId: id || "", updatedDetails }));
 
       naviagte("/");
 
@@ -68,7 +58,7 @@ export default function UpdateUser() {
             type="text"
             placeholder="Enter your username"
             className={styles.input}
-            defaultValue={userProfileInfo?.name}
+            defaultValue={name}
             {...register("name")}
           />
 
@@ -76,12 +66,14 @@ export default function UpdateUser() {
             <span style={{ color: "red" }}>{errors.name.message}</span>
           )}
 
-          <label htmlFor="password">Email</label>
+          <label htmlFor="password" className={styles.label}>
+            Email
+          </label>
           <input
             type="email"
             placeholder="Enter your password"
             className={styles.input}
-            defaultValue={userProfileInfo?.email}
+            defaultValue={email}
             {...register("email")}
           />
           {errors.email && (
@@ -91,9 +83,6 @@ export default function UpdateUser() {
             Update Details
           </button>
         </form>
-        {/* <div className="switch">
-          Don't have an account? <a href="#">Register here</a>
-        </div> */}
       </div>
     </div>
   );

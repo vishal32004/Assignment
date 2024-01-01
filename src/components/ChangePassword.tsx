@@ -1,22 +1,28 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "../cssModules/ChangePassword.module.css";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { getUser } from "../Slices/authSlice";
+import { useAppDispatch } from "../hooks/reduxHooks";
 import { updatePassword } from "../Slices/userSlice";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useUserData } from "../hooks/useUserData";
 
 type PasswordFormData = {
   password: string;
   confirmPassword: string;
 };
 
-const schema = z.object({
-  password: z.string().min(6).max(20),
-  confirmPassword: z.string().min(6).max(20),
-});
+const schema = z
+  .object({
+    password: z.string().min(6).max(20),
+    confirmPassword: z.string().min(6).max(20),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password Must Match",
+    path: ["confirmPassword"],
+  });
 
 export default function UpdateUser() {
   const {
@@ -28,13 +34,8 @@ export default function UpdateUser() {
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
-
-  useEffect(() => {
-    if (basicUserInfo) {
-      dispatch(getUser(basicUserInfo.id));
-    }
-  }, [basicUserInfo]);
+  const { id } = useUserData();
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data: PasswordFormData) => {
     try {
@@ -45,7 +46,7 @@ export default function UpdateUser() {
 
       await dispatch(
         updatePassword({
-          userId: basicUserInfo?.id || "",
+          userId: id || "",
           password: data.password,
         })
       );
@@ -57,6 +58,10 @@ export default function UpdateUser() {
       console.error("Error updating password:", error);
     }
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((el) => !el);
+  };
   return (
     <div className={styles.container}>
       <div className={styles.card}>
@@ -66,14 +71,30 @@ export default function UpdateUser() {
             Password
           </label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Enter your Password"
             className={styles.input}
             {...register("password")}
           />
-          {errors.password && <span style={{color: 'red'}}>{errors.password.message}</span>}
 
-          <label htmlFor="password">Confirm Password</label>
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            style={{
+              position: "absolute",
+              right: "20px",
+              top: "2.8rem",
+            }}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+          {errors.password && (
+            <span style={{ color: "red" }}>{errors.password.message}</span>
+          )}
+
+          <label htmlFor="password" className={styles.label}>
+            Confirm Password
+          </label>
           <input
             type="password"
             placeholder="Confirm your password"
@@ -81,7 +102,9 @@ export default function UpdateUser() {
             {...register("confirmPassword")}
           />
           {errors.confirmPassword && (
-            <span style={{color: 'red'}}>{errors.confirmPassword.message}</span>
+            <span style={{ color: "red" }}>
+              {errors.confirmPassword.message}
+            </span>
           )}
 
           <button type="submit" className={styles.button}>
