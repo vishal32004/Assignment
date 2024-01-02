@@ -43,19 +43,15 @@ export default function UpdateUser() {
         console.error("Passwords do not match!");
         return;
       }
-
       await dispatch(
         updatePassword({
           userId: id || "",
           password: data.password,
         })
       );
-
       navigate("/");
-
-      console.log("Password updated successfully!");
     } catch (error) {
-      console.error("Error updating password:", error);
+      console.error(error)
     }
   };
 

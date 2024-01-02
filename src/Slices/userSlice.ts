@@ -34,7 +34,6 @@ export const updateUserDetails = createAsyncThunk(
         `/users/${userId}`,
         updatedDetails
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -56,7 +55,6 @@ export const updatePassword = createAsyncThunk(
       const response = await axiosInstance.put(`/users/${userId}/password`, {
         password,
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -87,6 +85,7 @@ const userSlice = createSlice({
       )
       .addCase(updateUserDetails.rejected, (state, action) => {
         state.status = "failed";
+        state.userProfile = null;
         if (action.payload) {
           state.error =
             (action.payload as ErrorResponse).message || "Update failed";

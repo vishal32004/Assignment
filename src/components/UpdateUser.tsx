@@ -35,12 +35,8 @@ export default function UpdateUser() {
         name: data.name,
         email: data.email,
       };
-
       await dispatch(updateUserDetails({ userId: id || "", updatedDetails }));
-
       naviagte("/");
-
-      console.log("Details updated successfully!");
     } catch (error) {
       console.error("Error updating details:", error);
     }

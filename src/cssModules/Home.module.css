@@ -170,12 +170,14 @@ form .button input:hover {
 
 .EditButtom {
   float: right;
-  padding: 10px;
+  padding: 10px 15px;
   background-color: #09f;
   color: #fff;
+  border-radius: 30px;
 }
 .passButtom {
-  padding: 10px;
+  padding: 10px 15px;
   background-color: #9b59b6;
   color: #fff;
+  border-radius: 60px;
 }

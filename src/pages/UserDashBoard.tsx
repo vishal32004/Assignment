@@ -4,13 +4,28 @@ import LogOut from "../components/LogOut";
 import { useNavigate } from "react-router-dom";
 import { useUserData } from "../hooks/useUserData";
 
-const Home: React.FC = () => {
+const UserDashBoard: React.FC = () => {
   const naviagte = useNavigate();
   const { name, email } = useUserData();
 
   return (
     <>
       <LogOut />
+      <button
+        style={{
+          position: "absolute",
+          float: "right",
+          right: "10px",
+          top: "8px",
+          background: "#1976d2",
+          padding: "5px 15px",
+          borderRadius: "4rem",
+          color: "#fff",
+        }}
+        onClick={() => naviagte("/user-settings")}
+      >
+        View Users
+      </button>
       <div className={styles.body}>
         <div className={styles.container}>
           <div className={styles.title}>User Information</div>
@@ -73,4 +88,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default UserDashBoard;
