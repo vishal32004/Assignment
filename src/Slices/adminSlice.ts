@@ -40,6 +40,25 @@ export const getUsers = createAsyncThunk(
   }
 );
 
+
+export const updateUserRole = createAsyncThunk(
+  "users/updateRole",
+  async ({ userId, newRoles }: { userId: string; newRoles: string[] }, { rejectWithValue }) => {
+    console.log(userId,newRoles)
+    try {
+      const response = await axiosInstance.put(`/users/${userId}/role`, {userId, role: newRoles });
+
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        const errorResponse = error.response.data;
+        return rejectWithValue(errorResponse);
+      }
+      throw error;
+    }
+  }
+);
+
 const adminReducer = createSlice({
   name: "user",
   initialState,
@@ -65,6 +84,29 @@ const adminReducer = createSlice({
             "Retrieving users failed";
         } else {
           state.error = action.error.message || "Retrieving users failed";
+        }
+      })
+      .addCase(updateUserRole.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(
+        updateUserRole.fulfilled,
+        (state, action: PayloadAction<UserInfo>) => {
+          state.status = "idle";
+          const updatedUser = action.payload;
+          state.users = state.users.map((user) =>
+            user.id === updatedUser.id ? { ...user, roles: updatedUser.roles } : user
+          );
+        }
+      )
+      .addCase(updateUserRole.rejected, (state, action) => {
+        state.status = "failed";
+        if (action.payload) {
+          state.error =
+            (action.payload as ErrorResponse).message || "Updating user role failed";
+        } else {
+          state.error = action.error.message || "Updating user role failed";
         }
       });
   },
