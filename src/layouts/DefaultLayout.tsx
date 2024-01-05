@@ -1,28 +1,14 @@
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../hooks/reduxHooks';
-import {jwtDecode} from 'jwt-decode';
+import { Outlet } from "react-router-dom";
+import { useAppSelector } from "../hooks/reduxHooks";
+import { Navigate } from "react-router-dom";
 
 const DefaultLayout = () => {
-  const navigate = useNavigate();
-  const basicUserInfo = useAppSelector((state: any) => state.auth.basicUserInfo);
-  const token = basicUserInfo?.token; // Assuming token is stored in basicUserInfo
+  const basicUserInfo = useAppSelector(
+    (state: any) => state.auth.basicUserInfo
+  );
 
-  useEffect(() => {
-    if (token) {
-      const decodedToken: any = jwtDecode(token);
-      const currentTime = Date.now() / 1000;
-  
-      decodedToken.exp = currentTime - 60;
-  
-      if (decodedToken.exp && decodedToken.exp < currentTime) {
-        navigate('/login', { replace: true });
-      }
-    }
-  }, [token, navigate]);
-
-  if (!basicUserInfo) {
-    return <div>Loading...</div>;
+  if (basicUserInfo) {
+    return <Navigate replace to={"/"} />;
   }
 
   return (
