@@ -14,15 +14,14 @@ import {
   Select,
   MenuItem,
   Typography,
+  Container,
 } from "@mui/material";
-
 type Users = {
-    id: string;
-  email: string;
-  name: string;
-  roles: string[]
+  id: string;
+email: string;
+name: string;
+roles: string[]
 };
-
 const UserSettings = () => {
   const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.users.users);
@@ -35,10 +34,7 @@ const UserSettings = () => {
   const handleRoleUpdate = (userId: string, newRoles: string | string[]) => {
     const rolesArray = Array.isArray(newRoles) ? newRoles : [newRoles];
     dispatch(updateUserRole({ userId, newRoles: rolesArray }));
-};
-
-
-  users.map((el) => (console.log(el.id)))
+  };
 
   const filteredUsers = users.filter(
     (user) =>
@@ -47,51 +43,70 @@ const UserSettings = () => {
   );
 
   return (
-    <>
-      <Typography variant="h4">User Settings</Typography>
-      <TextField
-        label="Search by name or email"
-        variant="outlined"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        fullWidth
-        margin="normal"
-      />
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>User Email</TableCell>
-              <TableCell>User Name</TableCell>
-              <TableCell>Role</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredUsers.map((user: Users) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>
-                  <FormControl variant="outlined" fullWidth>
-                    <Select
-                      value={user.roles}
-                        onChange={(e) =>
-                            handleRoleUpdate(user.id, e.target.value as string)
-                        }
-                      label="Role"
-                      multiple 
-                    >
-                      <MenuItem value="USER">User</MenuItem>
-                      <MenuItem value="ADMIN">Admin</MenuItem>
-                    </Select>
-                  </FormControl>
-                </TableCell>
+    <Container sx={{fontFamily: "'Poppins', sans-serif", }}>
+      <Typography
+        variant="h4"
+        sx={{
+          fontSize: "1.5rem",
+          padding: "20px 10px",
+          textAlign: 'center',
+          fontFamily: "'Poppins', sans-serif"
+        }}
+      >
+        User Settings
+      </Typography>
+      <Container maxWidth="sm">
+        <TextField
+          label="Search by name or email"
+          variant="outlined"
+          value={searchTerm}
+          onChange={(e: React.ChangeEvent<any>) =>
+            setSearchTerm(e.target.value)
+          }
+          margin="normal"
+          fullWidth
+          size="small"
+          sx={{marginBottom: "16px",fontFamily: "'Poppins', sans-serif"}}
+        />
+      </Container>
+      <Container sx={{maxWidth: 'none'}}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "#3B3486" }}>
+                <TableCell sx={{ color: "#fff",fontFamily: "'Poppins', sans-serif",  }}>User Email</TableCell>
+                <TableCell sx={{ color: "#fff",fontFamily: "'Poppins', sans-serif",  }}>User Name</TableCell>
+                <TableCell sx={{ color: "#fff",fontFamily: "'Poppins', sans-serif",  }}>Role</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </>
+            </TableHead>
+            <TableBody>
+              {filteredUsers.map((user: Users) => (
+                <TableRow key={user.id}>
+                  <TableCell sx={{fontFamily: "'Poppins', sans-serif", }}>{user.email}</TableCell>
+                  <TableCell sx={{fontFamily: "'Poppins', sans-serif", }}>{user.name}</TableCell>
+                  <TableCell>
+                    <FormControl variant="outlined">
+                      <Select
+                        value={user.roles}
+                        onChange={(e) =>
+                          handleRoleUpdate(user.id, e.target.value)
+                        }
+                        label="Role"
+                        multiple
+                        sx={{fontFamily: "'Poppins', sans-serif", }}
+                      >
+                        <MenuItem value="USER" sx={{fontFamily: "'Poppins', sans-serif", }}>User</MenuItem>
+                        <MenuItem value="ADMIN" sx={{fontFamily: "'Poppins', sans-serif", }}>Admin</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
+    </Container>
   );
 };
 
