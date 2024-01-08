@@ -6,12 +6,12 @@ import { useUserData } from "../hooks/useUserData";
 
 const UserDashBoard: React.FC = () => {
   const naviagte = useNavigate();
-  const { name, email } = useUserData();
-
+  const { name, email,roles } = useUserData();
+  const isAdmin = roles && roles.includes("ADMIN")
   return (
     <>
       <LogOut />
-      <button
+      {isAdmin && <button
         style={{
           position: "absolute",
           float: "right",
@@ -25,7 +25,7 @@ const UserDashBoard: React.FC = () => {
         onClick={() => naviagte("/user-settings")}
       >
         View Users
-      </button>
+      </button>}
       <div className={styles.body}>
         <div className={styles.container}>
           <div className={styles.title}>User Information</div>

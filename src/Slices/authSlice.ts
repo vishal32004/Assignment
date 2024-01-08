@@ -22,6 +22,7 @@ type UserBasicInfo = {
 type UserProfileData = {
     name: string;
     email: string;
+    roles: string[]
 };
 
 type ErrorResponse = {
