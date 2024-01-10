@@ -1,28 +1,28 @@
-import React from "react";
-import styles from "../cssModules/Home.module.css";
-import LogOut from "../components/LogOut";
-import { useNavigate } from "react-router-dom";
-import { useUserData } from "../hooks/useUserData";
+import React from 'react';
+import styles from '../cssModules/Home.module.css';
+import LogOut from '../components/LogOut';
+import { useNavigate } from 'react-router-dom';
+import { useUserData } from '../hooks/useUserData';
 
 const UserDashBoard: React.FC = () => {
   const naviagte = useNavigate();
   const { name, email,roles } = useUserData();
-  const isAdmin = roles && roles.includes("ADMIN")
+  const isAdmin = roles && roles.includes('ADMIN')
   return (
     <>
       <LogOut />
       {isAdmin && <button
         style={{
-          position: "absolute",
-          float: "right",
-          right: "10px",
-          top: "8px",
-          background: "#1976d2",
-          padding: "5px 15px",
-          borderRadius: "4rem",
-          color: "#fff",
+          position: 'absolute',
+          float: 'right',
+          right: '10px',
+          top: '8px',
+          background: '#1976d2',
+          padding: '5px 15px',
+          borderRadius: '4rem',
+          color: '#fff',
         }}
-        onClick={() => naviagte("/user-settings")}
+        onClick={() => naviagte('/user-settings')}
       >
         View Users
       </button>}
@@ -37,7 +37,7 @@ const UserDashBoard: React.FC = () => {
                   type="text"
                   placeholder="E.g: John Smith"
                   required
-                  value={name || ""}
+                  value={name || ''}
                   readOnly
                 />
               </div>
@@ -47,7 +47,7 @@ const UserDashBoard: React.FC = () => {
                   type="email"
                   placeholder="johnsmith@hotmail.com"
                   required
-                  value={email || ""}
+                  value={email || ''}
                   readOnly
                 />
               </div>
@@ -55,29 +55,29 @@ const UserDashBoard: React.FC = () => {
           </form>
           <div
             style={{
-              display: "flex",
-              gap: "4rem",
-              textAlign: "center",
-              justifyContent: "space-between",
+              display: 'flex',
+              gap: '4rem',
+              textAlign: 'center',
+              justifyContent: 'space-between',
             }}
           >
             <button
               className={styles.passButtom}
-              onClick={() => naviagte("/updatePassword")}
+              onClick={() => naviagte('/updatePassword')}
             >
               <i
                 className="fa-sharp fa-solid fa-pen-to-square"
-                style={{ marginRight: "5px" }}
+                style={{ marginRight: '5px' }}
               ></i>
               Change Password
             </button>
             <button
               className={styles.EditButtom}
-              onClick={() => naviagte("/updateUser")}
+              onClick={() => naviagte('/updateUser')}
             >
               <i
                 className="fa-sharp fa-solid fa-pen-to-square"
-                style={{ marginRight: "5px" }}
+                style={{ marginRight: '5px' }}
               ></i>
               Edit Details
             </button>

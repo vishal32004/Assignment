@@ -1,18 +1,19 @@
-import { Route, Routes } from "react-router-dom";
-import "./App.css";
-import UserDashBoard from "./pages/UserDashBoard";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import DefaultLayout from "./layouts/DefaultLayout";
-import ProtectedLayout from "./layouts/ProtectedLayout";
-import NotificationBar from "./components/NotificationBar";
-import UpdateUser from "./components/UpdateUser";
-import ChangePassword from "./components/ChangePassword";
-import { Roles } from "./constants";
-import NotFound from "./components/NotFound";
-import UserSettings from "./pages/UserSettings";
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import './App.css';
+import UserDashBoard from './pages/UserDashBoard';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import DefaultLayout from './layouts/DefaultLayout';
+import ProtectedLayout from './layouts/ProtectedLayout';
+import NotificationBar from './components/NotificationBar';
+import UpdateUser from './components/UpdateUser';
+import ChangePassword from './components/ChangePassword';
+import { Roles } from './constants';
+import NotFound from './components/NotFound';
+import UserSettings from './pages/UserSettings';
 
-function App() {
+const App: React.FC = () => {
   return (
     <>
       <NotificationBar />

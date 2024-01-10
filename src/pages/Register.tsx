@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Avatar,
   Box,
@@ -7,29 +8,29 @@ import {
   Grid,
   TextField,
   Typography,
-} from "@mui/material";
-import { LockOutlined } from "@mui/icons-material";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useAppDispatch } from "../hooks/reduxHooks";
-import { registerNewUser } from "../Slices/authSlice";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from '@mui/material';
+import { LockOutlined } from '@mui/icons-material';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../hooks/reduxHooks';
+import { registerNewUser } from '../Slices/authSlice';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   showNotification,
   NotificationType,
-} from "../Slices/notificationSlice";
+} from '../Slices/notificationSlice';
 
 const registerSchema = z.object({
   name: z.string().min(4),
   email: z.string().email(),
-  password: z.string().min(8, "Password Must be 8 characters Long"),
+  password: z.string().min(8, 'Password Must be 8 characters Long'),
 });
 
 type FormData = z.infer<typeof registerSchema>;
 
-const Register = () => {
+const Register: React.FC = () => {
   const dispatch = useAppDispatch();
   const {
     register,
@@ -38,9 +39,9 @@ const Register = () => {
   } = useForm<FormData>({
     resolver: zodResolver(registerSchema),
   });
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleRegister = async () => {
     if (name && email && password) {
@@ -58,7 +59,7 @@ const Register = () => {
     } else {
       dispatch(
         showNotification({
-          message: "Please fill out all the required fields",
+          message: 'Please fill out all the required fields',
           type: NotificationType.Error,
         })
       );
@@ -72,12 +73,12 @@ const Register = () => {
         <Box
           sx={{
             mt: 20,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
+          <Avatar sx={{ m: 1, bgcolor: 'primary.light' }}>
             <LockOutlined />
           </Avatar>
           <Typography variant="h5">Register</Typography>
@@ -89,8 +90,8 @@ const Register = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
-                    {...register("name", {
-                      required: "Name is required",
+                    {...register('name', {
+                      required: 'Name is required',
                     })}
                     name="name"
                     required
@@ -107,11 +108,11 @@ const Register = () => {
 
                 <Grid item xs={12}>
                   <TextField
-                    {...register("email", {
-                      required: "Email is required",
+                    {...register('email', {
+                      required: 'Email is required',
                       pattern: {
                         value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Enter a valid email address",
+                        message: 'Enter a valid email address',
                       },
                     })}
                     required
@@ -127,11 +128,11 @@ const Register = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    {...register("password", {
-                      required: "Password is required",
+                    {...register('password', {
+                      required: 'Password is required',
                       minLength: {
                         value: 6,
-                        message: "Password must be at least 6 characters",
+                        message: 'Password must be at least 6 characters',
                       },
                     })}
                     required

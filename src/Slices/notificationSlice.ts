@@ -1,10 +1,10 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export enum NotificationType {
-    Success = "success",
-    Error = "error",
-    Warning = "warning",
-    Info = "info",
+    Success = 'success',
+    Error = 'error',
+    Warning = 'warning',
+    Info = 'info',
 }
 
 type Notification = {
@@ -13,16 +13,16 @@ type Notification = {
     type: NotificationType;
 };
 
-type ShowNotification = Omit<Notification, "open">;
+type ShowNotification = Omit<Notification, 'open'>;
 
 const initialState = {
     open: false,
-    message: "",
+    message: '',
     type: NotificationType.Success,
 };
 
 const notificationSlice = createSlice({
-    name: "notification",
+    name: 'notification',
     initialState,
     reducers: {
         showNotification: (state, action: PayloadAction<ShowNotification>) => {
@@ -32,7 +32,7 @@ const notificationSlice = createSlice({
         },
         hideNotification: (state) => {
             state.open = false;
-            state.message = "";
+            state.message = '';
         },
     },
 });

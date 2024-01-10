@@ -1,13 +1,14 @@
-import { useState } from "react";
-import styles from "../cssModules/ChangePassword.module.css";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../hooks/reduxHooks";
-import { updatePassword } from "../Slices/userSlice";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useUserData } from "../hooks/useUserData";
+import React from 'react';
+import { useState } from 'react';
+import styles from '../cssModules/ChangePassword.module.css';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../hooks/reduxHooks';
+import { updatePassword } from '../Slices/userSlice';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useUserData } from '../hooks/useUserData';
 
 type PasswordFormData = {
   password: string;
@@ -20,11 +21,11 @@ const schema = z
     confirmPassword: z.string().min(6).max(20),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Password Must Match",
-    path: ["confirmPassword"],
+    message: 'Password Must Match',
+    path: ['confirmPassword'],
   });
 
-export default function UpdateUser() {
+ const UpdateUser: React.FC = () => {
   const {
     handleSubmit,
     register,
@@ -40,16 +41,16 @@ export default function UpdateUser() {
   const onSubmit = async (data: PasswordFormData) => {
     try {
       if (data.password !== data.confirmPassword) {
-        console.error("Passwords do not match!");
+        console.error('Passwords do not match!');
         return;
       }
       await dispatch(
         updatePassword({
-          userId: id || "",
+          userId: id || '',
           password: data.password,
         })
       );
-      navigate("/");
+      navigate('/');
     } catch (error) {
       console.error(error)
     }
@@ -67,25 +68,25 @@ export default function UpdateUser() {
             Password
           </label>
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             placeholder="Enter your Password"
             className={styles.input}
-            {...register("password")}
+            {...register('password')}
           />
 
           <button
             type="button"
             onClick={togglePasswordVisibility}
             style={{
-              position: "absolute",
-              right: "20px",
-              top: "2.8rem",
+              position: 'absolute',
+              right: '20px',
+              top: '2.8rem',
             }}
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
           {errors.password && (
-            <span style={{ color: "red" }}>{errors.password.message}</span>
+            <span style={{ color: 'red' }}>{errors.password.message}</span>
           )}
 
           <label htmlFor="password" className={styles.label}>
@@ -95,10 +96,10 @@ export default function UpdateUser() {
             type="password"
             placeholder="Confirm your password"
             className={styles.input}
-            {...register("confirmPassword")}
+            {...register('confirmPassword')}
           />
           {errors.confirmPassword && (
-            <span style={{ color: "red" }}>
+            <span style={{ color: 'red' }}>
               {errors.confirmPassword.message}
             </span>
           )}
@@ -111,3 +112,5 @@ export default function UpdateUser() {
     </div>
   );
 }
+
+export default UpdateUser

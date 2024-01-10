@@ -1,7 +1,7 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axiosInstance from "../api/axiosInstance";
-import { AxiosError } from "axios";
-import { ErrorResponse } from "../constants";
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axiosInstance from '../api/axiosInstance';
+import { AxiosError } from 'axios';
+import { ErrorResponse } from '../constants';
 
 type UserInfo = {
   id: string;
@@ -12,21 +12,21 @@ type UserInfo = {
 
 type UserApiState = {
   users: UserInfo[];
-  status: "idle" | "loading" | "failed";
+  status: 'idle' | 'loading' | 'failed';
   error: string | null;
 };
 
 const initialState: UserApiState = {
   users: [],
-  status: "idle",
+  status: 'idle',
   error: null,
 };
 
 export const getUsers = createAsyncThunk(
-  "users/getAll",
+  'users/getAll',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get("/users");
+      const response = await axiosInstance.get('/users');
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -42,7 +42,7 @@ export const getUsers = createAsyncThunk(
 
 
 export const updateUserRole = createAsyncThunk(
-  "users/updateRole",
+  'users/updateRole',
   async ({ userId, newRoles }: { userId: string; newRoles: string[] }, { rejectWithValue }) => {
     console.log(userId,newRoles)
     try {
@@ -60,40 +60,40 @@ export const updateUserRole = createAsyncThunk(
 );
 
 const adminReducer = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getUsers.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
         state.error = null;
       })
       .addCase(
         getUsers.fulfilled,
         (state, action: PayloadAction<UserInfo[]>) => {
-          state.status = "idle";
+          state.status = 'idle';
           state.users = action.payload;
         }
       )
       .addCase(getUsers.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = 'failed';
         if (action.payload) {
           state.error =
             (action.payload as ErrorResponse).message ||
-            "Retrieving users failed";
+            'Retrieving users failed';
         } else {
-          state.error = action.error.message || "Retrieving users failed";
+          state.error = action.error.message || 'Retrieving users failed';
         }
       })
       .addCase(updateUserRole.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
         state.error = null;
       })
       .addCase(
         updateUserRole.fulfilled,
         (state, action: PayloadAction<UserInfo>) => {
-          state.status = "idle";
+          state.status = 'idle';
           const updatedUser = action.payload;
           state.users = state.users.map((user) =>
             user.id === updatedUser.id ? { ...user, roles: updatedUser.roles } : user
@@ -101,12 +101,12 @@ const adminReducer = createSlice({
         }
       )
       .addCase(updateUserRole.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = 'failed';
         if (action.payload) {
           state.error =
-            (action.payload as ErrorResponse).message || "Updating user role failed";
+            (action.payload as ErrorResponse).message || 'Updating user role failed';
         } else {
-          state.error = action.error.message || "Updating user role failed";
+          state.error = action.error.message || 'Updating user role failed';
         }
       });
   },

@@ -3,6 +3,6 @@ export type ErrorResponse = {
   };
   
   export enum Roles {
-    Admin = "ADMIN",
-    User = "USER",
+    Admin = 'ADMIN',
+    User = 'USER',
   }

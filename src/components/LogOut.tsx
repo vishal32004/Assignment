@@ -1,16 +1,17 @@
-import styles from "../cssModules/LogOut.module.css";
-import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../Slices/authSlice";
-import { useAppDispatch } from "../hooks/reduxHooks";
+import React from 'react';
+import styles from '../cssModules/LogOut.module.css';
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../Slices/authSlice';
+import { useAppDispatch } from '../hooks/reduxHooks';
 
-export default function LogOut() {
+const LogOut: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
       await dispatch(logout()).unwrap();
-      navigate("/login");
+      navigate('/login');
     } catch (e) {
       console.error(e);
     }
@@ -23,3 +24,4 @@ export default function LogOut() {
     </div>
   );
 }
+export default LogOut

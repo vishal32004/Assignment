@@ -1,9 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "../Slices/userSlice";
-import authReducer from "../Slices/authSlice";
-import notificationReducer from "../Slices/notificationSlice";
-import { axiosMiddleware } from "../api/middleware";
-import adminReducer from "../Slices/adminSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import userReducer from '../Slices/userSlice';
+import authReducer from '../Slices/authSlice';
+import notificationReducer from '../Slices/notificationSlice';
+import { axiosMiddleware } from '../api/middleware';
+import adminReducer from '../Slices/adminSlice';
 
 const store = configureStore({
   reducer: {

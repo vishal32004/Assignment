@@ -1,11 +1,12 @@
-import styles from "../cssModules/UpdateUser.module.css";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../hooks/reduxHooks";
-import { updateUserDetails } from "../Slices/userSlice";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useUserData } from "../hooks/useUserData";
+import React from 'react';
+import styles from '../cssModules/UpdateUser.module.css';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../hooks/reduxHooks';
+import { updateUserDetails } from '../Slices/userSlice';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useUserData } from '../hooks/useUserData';
 
 type UpdateFormData = {
   name: string;
@@ -17,7 +18,7 @@ const UpdateSchema = z.object({
   email: z.string().email(),
 });
 
-export default function UpdateUser() {
+const UpdateUser: React.FC = () => {
   const {
     handleSubmit,
     register,
@@ -35,10 +36,10 @@ export default function UpdateUser() {
         name: data.name,
         email: data.email,
       };
-      await dispatch(updateUserDetails({ userId: id || "", updatedDetails }));
-      naviagte("/");
+      await dispatch(updateUserDetails({ userId: id || '', updatedDetails }));
+      naviagte('/');
     } catch (error) {
-      console.error("Error updating details:", error);
+      console.error('Error updating details:', error);
     }
   };
 
@@ -55,11 +56,11 @@ export default function UpdateUser() {
             placeholder="Enter your username"
             className={styles.input}
             defaultValue={name}
-            {...register("name")}
+            {...register('name')}
           />
 
           {errors.name && (
-            <span style={{ color: "red" }}>{errors.name.message}</span>
+            <span style={{ color: 'red' }}>{errors.name.message}</span>
           )}
 
           <label htmlFor="password" className={styles.label}>
@@ -70,10 +71,10 @@ export default function UpdateUser() {
             placeholder="Enter your password"
             className={styles.input}
             defaultValue={email}
-            {...register("email")}
+            {...register('email')}
           />
           {errors.email && (
-            <span style={{ color: "red" }}>{errors.email.message}</span>
+            <span style={{ color: 'red' }}>{errors.email.message}</span>
           )}
           <button type="submit" className={styles.button}>
             Update Details
@@ -83,3 +84,5 @@ export default function UpdateUser() {
     </div>
   );
 }
+
+export default UpdateUser

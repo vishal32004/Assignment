@@ -1,15 +1,23 @@
-import { Middleware } from "@reduxjs/toolkit";
+import { Middleware } from '@reduxjs/toolkit';
 import {
     showNotification,
     NotificationType,
-} from "../Slices/notificationSlice";
+} from '../Slices/notificationSlice';
+
+interface MyAction {
+    type: string;
+    payload?: {
+      message?: string;
+    };
+  }
+  
 
 export const axiosMiddleware: Middleware =
     ({ dispatch }) =>
         (next) =>
             async (action: any) => {
-                if (action.type.endsWith("/rejected")) {
-                    const errorMessage = action.payload?.message || "An error occurred!";
+                if (action.type.endsWith('/rejected')) {
+                    const errorMessage = action.payload?.message || 'An error occurred!';
 
                     dispatch(
                         showNotification({
@@ -17,8 +25,8 @@ export const axiosMiddleware: Middleware =
                             message: errorMessage,
                         })
                     );
-                } else if (action.type.endsWith("/fulfilled")) {
-                    const successMessage = action.payload?.message || "Sucess!";
+                } else if (action.type.endsWith('/fulfilled')) {
+                    const successMessage = action.payload?.message || 'Sucess!';
 
                     dispatch(
                         showNotification({

@@ -1,10 +1,10 @@
-import * as React from "react";
-import Stack from "@mui/material/Stack";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { useAppSelector } from "../hooks/reduxHooks";
-import { hideNotification } from "../Slices/notificationSlice";
-import { useAppDispatch } from "../hooks/reduxHooks";
+import * as React from 'react';
+import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { useAppSelector } from '../hooks/reduxHooks';
+import { hideNotification } from '../Slices/notificationSlice';
+import { useAppDispatch } from '../hooks/reduxHooks';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -13,7 +13,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const NotificationBar = () => {
+const NotificationBar: React.FC = () => {
   const dispatch = useAppDispatch();
   const { open, message, type } = useAppSelector((state) => state.notification);
 
@@ -21,7 +21,7 @@ const NotificationBar = () => {
     event?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
 
@@ -29,14 +29,14 @@ const NotificationBar = () => {
   };
 
   return (
-    <Stack spacing={2} sx={{ width: "100%" }}>
+    <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar
         open={open}
         autoHideDuration={6000}
         onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleClose} severity={type} sx={{ width: "100%" }}>
+        <Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>
           {message}
         </Alert>
       </Snackbar>

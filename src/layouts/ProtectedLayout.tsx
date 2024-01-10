@@ -1,10 +1,11 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { Navigate } from "react-router-dom";
-import AccessDenied from "../components/AccessDenied";
-import { logout } from "../Slices/authSlice";
-import { jwtDecode } from "jwt-decode";
-import { useEffect } from "react";
+import React from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
+import { Navigate } from 'react-router-dom';
+import AccessDenied from '../components/AccessDenied';
+import { logout } from '../Slices/authSlice';
+import { jwtDecode } from 'jwt-decode';
+import { useEffect } from 'react';
 
 type ProtectedLayoutType = {
   allowedRoles: string[];
@@ -21,14 +22,14 @@ const ProtectedLayout = ({ allowedRoles }: ProtectedLayoutType) => {
     if (token) {
       const decoded = jwtDecode(token);
 
-      if (decoded && typeof decoded.exp === "number") {
+      if (decoded && typeof decoded.exp === 'number') {
         const expiryTime = new Date(decoded.exp * 1000).getTime();
         const currentTime = new Date().getTime();
 
         const timeout = expiryTime - currentTime;
         const onExpire = () => {
           dispatch(logout());
-          navigate("/login");
+          navigate('/login');
         };
 
         if (timeout > 0) {
@@ -44,14 +45,14 @@ const ProtectedLayout = ({ allowedRoles }: ProtectedLayoutType) => {
   }, [dispatch, navigate, token]);
 
   if (!basicUserInfo) {
-    return <Navigate replace to={"/login"} />;
+    return <Navigate replace to={'/login'} />;
   }
 
   if (
     !basicUserInfo.roles ||
     !basicUserInfo.roles.some((role: string) => allowedRoles.includes(role))
   ) {
-    console.log(basicUserInfo, "test");
+    console.log(basicUserInfo, 'test');
     return <AccessDenied />;
   }
 

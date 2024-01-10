@@ -1,5 +1,6 @@
-import styles from "../cssModules/AccessDenied.module.css";
-const AccessDenied = () => {
+import React from 'react';
+import styles from '../cssModules/AccessDenied.module.css';
+const AccessDenied: React.FC = () => {
   return (
     <div className={styles.Aothorize}>
       <div className={styles.gandalf}>

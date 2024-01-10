@@ -1,4 +1,5 @@
-import { LockOutlined } from "@mui/icons-material";
+import React from 'react';
+import { LockOutlined } from '@mui/icons-material';
 import {
   Container,
   CssBaseline,
@@ -8,18 +9,18 @@ import {
   TextField,
   Button,
   Grid,
-} from "@mui/material";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { useAppDispatch } from "../hooks/reduxHooks";
-import { login } from "../Slices/authSlice";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from '@mui/material';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../hooks/reduxHooks';
+import { login } from '../Slices/authSlice';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   showNotification,
   NotificationType,
-} from "../Slices/notificationSlice";
+} from '../Slices/notificationSlice';
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -28,7 +29,7 @@ const loginSchema = z.object({
 
 type FormData = z.infer<typeof loginSchema>;
 
-const Login = () => {
+const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const {
     register,
@@ -37,8 +38,8 @@ const Login = () => {
   } = useForm<FormData>({
     resolver: zodResolver(loginSchema),
   });
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     if (email && password) {
@@ -55,7 +56,7 @@ const Login = () => {
     } else {
       dispatch(
         showNotification({
-          message: "Please provide email and password",
+          message: 'Please provide email and password',
           type: NotificationType.Error,
         })
       );
@@ -69,12 +70,12 @@ const Login = () => {
         <Box
           sx={{
             mt: 20,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
+          <Avatar sx={{ m: 1, bgcolor: 'primary.light' }}>
             <LockOutlined />
           </Avatar>
           <Typography variant="h5">Login</Typography>
@@ -84,8 +85,8 @@ const Login = () => {
               noValidate
             >
               <TextField
-                {...register("email", {
-                  required: "email is required",
+                {...register('email', {
+                  required: 'email is required',
                 })}
                 margin="normal"
                 required
@@ -101,8 +102,8 @@ const Login = () => {
               />
 
               <TextField
-                {...register("password", {
-                  required: "Password is required",
+                {...register('password', {
+                  required: 'Password is required',
                 })}
                 margin="normal"
                 required
@@ -128,7 +129,7 @@ const Login = () => {
                 Login
               </Button>
             </form>
-            <Grid container justifyContent={"flex-end"}>
+            <Grid container justifyContent={'flex-end'}>
               <Grid item>
                 <Link to="/register">Don't have an account? Register</Link>
               </Grid>
