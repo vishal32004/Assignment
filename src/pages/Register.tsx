@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../hooks/reduxHooks';
@@ -39,11 +38,9 @@ const Register: React.FC = () => {
   } = useForm<FormData>({
     resolver: zodResolver(registerSchema),
   });
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleRegister = async () => {
+  const handleRegister = async (formData: FormData) => {
+    const {name, email, password } = formData;
     if (name && email && password) {
       try {
         await dispatch(
@@ -84,7 +81,7 @@ const Register: React.FC = () => {
           <Typography variant="h5">Register</Typography>
           <Box sx={{ mt: 3 }}>
             <form
-              onSubmit={handleSubmit((data) => console.log(data))}
+              onSubmit={handleSubmit(handleRegister)}
               noValidate
             >
               <Grid container spacing={2}>
@@ -99,8 +96,6 @@ const Register: React.FC = () => {
                     id="name"
                     label="Name"
                     autoFocus
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
                     error={!!errors.name}
                     helperText={errors.name && errors.name.message}
                   />
@@ -120,8 +115,6 @@ const Register: React.FC = () => {
                     id="email"
                     label="Email Address"
                     name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     error={!!errors.email}
                     helperText={errors.email && errors.email.message}
                   />
@@ -141,8 +134,6 @@ const Register: React.FC = () => {
                     label="Password"
                     type="password"
                     id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
                     error={!!errors.password}
                     helperText={errors.password && errors.password.message}
                   />
@@ -153,7 +144,6 @@ const Register: React.FC = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={handleRegister}
               >
                 Register
               </Button>

@@ -4,14 +4,6 @@ import {
     NotificationType,
 } from '../Slices/notificationSlice';
 
-interface MyAction {
-    type: string;
-    payload?: {
-      message?: string;
-    };
-  }
-  
-
 export const axiosMiddleware: Middleware =
     ({ dispatch }) =>
         (next) =>

@@ -10,7 +10,6 @@ import {
   Button,
   Grid,
 } from '@mui/material';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/reduxHooks';
@@ -38,10 +37,9 @@ const Login: React.FC = () => {
   } = useForm<FormData>({
     resolver: zodResolver(loginSchema),
   });
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
+  const handleLogin = async (formData: FormData) => {
+    const { email, password } = formData;
     if (email && password) {
       try {
         await dispatch(
@@ -95,8 +93,6 @@ const Login: React.FC = () => {
                 label="Email Address"
                 name="email"
                 autoFocus
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 error={!!errors.email}
                 helperText={errors.email && errors.email.message}
               />
@@ -112,10 +108,6 @@ const Login: React.FC = () => {
                 name="password"
                 label="Password"
                 type="password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
                 error={!!errors.password}
                 helperText={errors.password && errors.password.message}
               />
@@ -131,7 +123,7 @@ const Login: React.FC = () => {
             </form>
             <Grid container justifyContent={'flex-end'}>
               <Grid item>
-                <Link to="/register">Don't have an account? Register</Link>
+                <Link to="/register">Do not have an account? Register</Link>
               </Grid>
             </Grid>
           </Box>
